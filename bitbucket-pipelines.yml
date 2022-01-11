@@ -1,0 +1,21 @@
+# Template PHP Build
+
+# This template allows you to validate your PHP application.
+# The workflow allows running tests and code linting on the default branch.
+
+image: composer:2.0
+
+pipelines:
+  default:
+    - parallel:
+        - step:
+            name: DockerBuild
+            script:
+              - composer install --ignore-platform-reqs
+              - docker build -t viktor271/pjotus .
+              - docker login -u viktor271 -p cba8cd53-f335-42c8-9cd3-0dbb0d03f80c
+              - docker push viktor271/pjotus
+            services:
+              - docker
+            caches:
+              - docker # adds docker layer caching 
